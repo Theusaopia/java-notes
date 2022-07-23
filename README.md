@@ -7,3 +7,4 @@ Repository to keep code examples of concepts that i'm learning.
  2. [Default Methods](https://quilled-sword-021.notion.site/Default-methods-6a4e5ea4b6e64b80850c6fc0c196e958)
  3. [Generics](https://quilled-sword-021.notion.site/Generics-aad7e4b00fe8473a8939259a8b769ed0)
  4. [Generics Methods](https://quilled-sword-021.notion.site/Generic-Methods-09dd1154d241464081ad2e615777d1e2)
+ 5. [Unknown Wildcards](https://quilled-sword-021.notion.site/Unknown-Wildcard-6c6d36f3c26d4774ae0703126a1c2ccf)
