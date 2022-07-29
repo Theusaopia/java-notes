@@ -1,44 +1,50 @@
 package application;
 
-import entities.LogEntry;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.time.Instant;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
+
+/**
+ * In an online courses portal, each user has a unique code, represented by an integer number.
+ *
+ * Each instructor of the portal can have many courses, and a same student can enroll in many courses. Thus, the
+ * total number of an instructor students isn't simply the sum of all the students of his courses, because there
+ * aren't repeated students in more than one course.
+ *
+ * Alex have 3 courses, A, B and C and wants to know his total number of students.
+ *
+ * The program must read the students of courses A, B and C of Alex and after that, show the
+ * total number of alex students.
+ * **/
 
 public class Program {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Enter file full path: ");
-        String path = sc.nextLine();
+        Set<Integer> courseA = new HashSet<>();
+        Set<Integer> courseB = new HashSet<>();
+        Set<Integer> courseC = new HashSet<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            Set<LogEntry> set = new HashSet<>();
+        populateSet(courseA, "course A", sc);
+        populateSet(courseB, "course B", sc);
+        populateSet(courseC, "course C", sc);
 
-            String line = br.readLine();
+        Set<Integer> total = new HashSet<>();
+        total.addAll(courseA);
+        total.addAll(courseB);
+        total.addAll(courseC);
 
-            while (line != null) {
-                String[] fields = line.split(" ");
-                String username = fields[0];
-                Date moment = Date.from(Instant.parse(fields[1]));
-
-                set.add(new LogEntry(username, moment));
-
-                line = br.readLine();
-            }
-
-            System.out.println("Total users: " + set.size());
-        }
-        catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        System.out.println("Total students: " + total.size());
 
         sc.close();
+    }
+
+    public static void populateSet(Set<Integer> set, String courseName, Scanner sc) {
+        System.out.println("How many students for " + courseName + "?");
+        int numberOfStudents = sc.nextInt();
+
+        for (int i = 0; i < numberOfStudents; i++) {
+            set.add(sc.nextInt());
+        }
     }
 }
