@@ -1,12 +1,11 @@
 package application;
 
 import entities.Product;
-import util.ProductPredicate;
+import util.PriceUpdate;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.function.Consumer;
 
 public class Program {
     public static void main(String[] args) {
@@ -17,16 +16,16 @@ public class Program {
         list.add(new Product("Tablet", 350.50));
         list.add(new Product("HD Case", 80.90));
 
-        Predicate<Product> pred = p -> p.getPrice() >= 100;
+        Consumer<Product> cons = p -> {
+            p.setPrice(p.getPrice() * 1.1);
+        };
 
-        //list.removeIf(new ProductPredicate()); interface implementation
-        //list.removeIf(Product::staticProductPredicate); method reference (static)
-        //list.removeIf(Product::nonStaticProductPredicate); method reference (non static)
-        //list.removeIf(pred); declared lambda expression
-        list.removeIf(p -> p.getPrice() >= 100); //lambda expression inline
+        //list.forEach(new PriceUpdate()); interface implementation
+        //list.forEach(Product::staticPriceUpdate); static reference method
+        //list.forEach(Product::nonStaticPriceUpdate); non-static reference method
+        //list.forEach(cons); declared lambda expression
+        list.forEach(p -> p.setPrice(p.getPrice() * 1.1));
 
-        for(Product p : list) {
-            System.out.println(p);
-        }
+        list.forEach(System.out::println);
     }
 }
