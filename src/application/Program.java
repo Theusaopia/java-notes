@@ -3,34 +3,54 @@ package application;
 import db.DB;
 import exceptions.DbException;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class Program {
     public static void main(String[] args) {
         Connection conn = null;
-        Statement st = null;
-        ResultSet rs = null;
+        PreparedStatement ps = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         try {
             conn = DB.getConnection();
 
-            st = conn.createStatement();
+            ps = conn.prepareStatement(
+              "INSERT INTO seller " +
+                      "(Name, Email, BirthDate, BaseSalary, DepartmentId) " +
+                      "VALUES " +
+                      "(?, ?, ?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS
+            );
 
-            rs = st.executeQuery("SELECT * FROM department");
+            ps.setString(1, "Matheus O Mito");
+            ps.setString(2, "matheus@email.com");
+            ps.setDate(3, new Date(sdf.parse("17/11/1998").getTime()));
+            ps.setDouble(4, 74940.87);
+            ps.setInt(5, 4);
 
-            while (rs.next()) {
-                System.out.println(rs.getInt("Id") + ", " + rs.getString("Name"));
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0 ) {
+                ResultSet rs = ps.getGeneratedKeys();
+
+                while (rs.next()) {
+                    int id = rs.getInt(1);
+                    System.out.println("Done! id: " + id);
+                }
+            }
+            else {
+                System.out.println("No rows affected.");
             }
         }
         catch (SQLException ex) {
             throw new DbException(ex.getMessage());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
         finally {
-            DB.closeResultSet(rs);
-            DB.closeStatement(st);
+            DB.closeStatement(ps);
             DB.closeConnection();
         }
     }
