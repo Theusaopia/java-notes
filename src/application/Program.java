@@ -19,5 +19,9 @@ public class Program {
         Department dep = new Department(2, null);
         List<Seller> list = sellerDAO.findByDepartment(dep);
         list.forEach(System.out::println);
+
+        System.out.println("\n=== TEST 3: seller findAll ===");
+        list = sellerDAO.findAll();
+        list.forEach(System.out::println);
     }
 }
